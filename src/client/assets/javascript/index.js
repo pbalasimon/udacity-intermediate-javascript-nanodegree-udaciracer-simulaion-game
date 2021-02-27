@@ -74,9 +74,6 @@ async function delay(ms) {
 
 // This async function controls the flow of the race, add the logic and error handling
 async function handleCreateRace() {
-	// render starting UI
-	renderAt('#race', renderRaceStartView());
-
 	try {
 
 		// Get player_id and track_id from the store
@@ -84,6 +81,9 @@ async function handleCreateRace() {
 
 		// invoke the API call to create the race, then save the result
 		const race = await createRace(player_id, track_id);
+
+		// render starting UI
+		renderAt('#race', renderRaceStartView(race.Track, race.Cars));
 
 		// update the store with the race id
 		store.race_id = race.ID - 1;
@@ -144,34 +144,35 @@ async function runCountdown() {
 }
 
 function handleSelectPodRacer(target) {
-	console.log("selected a pod", target.id)
+	console.log("selected a pod", target.id);
 
 	// remove class selected from all racer options
-	const selected = document.querySelector('#racers .selected')
+	const selected = document.querySelector('#racers .selected');
 	if (selected) {
-		selected.classList.remove('selected')
+		selected.classList.remove('selected');
 	}
 
 	// add class selected to current target
-	target.classList.add('selected')
+	target.classList.add('selected');
 
-	// TODO - save the selected racer to the store
+	// save the selected racer to the store
+	store.race_id = parseInt(target.id);
 }
 
 function handleSelectTrack(target) {
-	console.log("selected a track", target.id)
+	console.log("selected a track", target.id);
 
 	// remove class selected from all track options
-	const selected = document.querySelector('#tracks .selected')
+	const selected = document.querySelector('#tracks .selected');
 	if (selected) {
-		selected.classList.remove('selected')
+		selected.classList.remove('selected');
 	}
 
 	// add class selected to current target
-	target.classList.add('selected')
+	target.classList.add('selected');
 
-	// TODO - save the selected track id to the store
-
+	// save the selected track id to the store
+	store.track_id = parseInt(target.id);
 }
 
 function handleAccelerate() {
