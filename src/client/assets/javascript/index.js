@@ -328,14 +328,26 @@ function defaultFetchOpts() {
 	}
 }
 
-// TODO - Make a fetch call (with error handling!) to each of the following API endpoints
+// Make a fetch call (with error handling!) to each of the following API endpoints
 
-function getTracks() {
+async function getTracks() {
 	// GET request to `${SERVER}/api/tracks`
+	return fetch(`${SERVER}/api/tracks`, {
+		method: 'GET',
+		...defaultFetchOpts()
+	})
+		.then(result => result.json())
+		.catch(error => console.error(`Error fecthing tracks: ${error.message}`));
 }
 
-function getRacers() {
+async function getRacers() {
 	// GET request to `${SERVER}/api/cars`
+	return fetch(`${SERVER}/api/cars`, {
+		method: 'GET',
+		...defaultFetchOpts()
+	})
+		.then(result => result.json())
+		.catch(error => console.error(`Error fetching cars: ${error.message}`));
 }
 
 function createRace(player_id, track_id) {
